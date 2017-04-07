@@ -32,8 +32,6 @@
                </font>
             </Label>
             <Slider fx:id="timeSlider" layoutX="8.0" layoutY="91.0" max="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
-            <Label fx:id="comboTime" layoutX="8.0" layoutY="71.0" text="0:00 / 2:41" AnchorPane.leftAnchor="8.0" />
-            <Label fx:id="negTime" layoutX="315.0" layoutY="71.0" text="-2:41" textAlignment="RIGHT" AnchorPane.rightAnchor="8.0" />
             <Separator layoutX="56.0" layoutY="62.0" prefWidth="200.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
             <Button fx:id="playButton" layoutX="10.0" layoutY="111.0" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="30.0" prefWidth="37.0" text="Play" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0">
                <font>
@@ -44,6 +42,15 @@
                   <Font size="10.0" />
                </font>
             </Button>
+            <HBox layoutX="8.0" layoutY="71.0" prefHeight="14.0" prefWidth="334.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
+               <children>
+                  <Label fx:id="currentTime" text="0:00" HBox.hgrow="NEVER" />
+                  <Label text=" / " HBox.hgrow="NEVER" />
+                  <Label fx:id="totalDuration" text="0:00" HBox.hgrow="NEVER" />
+                  <Region prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="negativeTime" text="0:00" textAlignment="RIGHT" HBox.hgrow="NEVER" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>

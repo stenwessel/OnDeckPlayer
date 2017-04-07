@@ -19,10 +19,14 @@ import java.util.ResourceBundle;
 public class PlayerController implements Initializable {
 
     private static final String UNKNOWN = "Unknown";
+    private static final Image EMPTY_IMAGE = new Image("/img/vinylbaseball.png");
 
     @FXML public Button playButton;
 
     @FXML public Slider timeSlider;
+    @FXML public Label currentTime;
+    @FXML public Label negativeTime;
+    @FXML public Label totalDuration;
 
     @FXML public Label title;
     @FXML public Label artist;
@@ -46,7 +50,7 @@ public class PlayerController implements Initializable {
         timeSlider.setMax(0);
 
         // Reset song metadata
-        albumArt.setImage(null);
+        albumArt.setImage(EMPTY_IMAGE);
         title.setText(null);
         artist.setText(null);
     }
@@ -55,9 +59,12 @@ public class PlayerController implements Initializable {
         MediaPlayer mp = song.getMediaPlayer();
 
         mp.setOnReady(() -> {
-            // Reset slider length
+            // Set slider length
             timeSlider.setMin(mp.getStartTime().toMillis());
             timeSlider.setMax(mp.getStopTime().toMillis());
+
+            // Set song duration
+            totalDuration.setText(PlayerUtil.formatDuration(mp.getStopTime()));
 
             // Get metadata
             ObservableMap<String, Object> metadata = mp.getMedia().getMetadata();
@@ -73,14 +80,19 @@ public class PlayerController implements Initializable {
         MediaPlayer mp = song.getMediaPlayer();
 
         // Current time
-        Duration currentTime = mp.getCurrentTime();
-        timeSlider.adjustValue(currentTime.toMillis());
+        Duration duration = mp.getCurrentTime();
+        if (!timeSlider.isValueChanging()) {
+            timeSlider.adjustValue(duration.toMillis());
+        }
+        currentTime.setText(PlayerUtil.formatDuration(duration));
+        negativeTime.setText(PlayerUtil.formatDuration(mp.getStopTime().subtract(duration).negate()));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Player player = main.getPlayer();
 
+        // Song and time listeners
         player.currentSongProperty().addListener((o, old, song) -> {
             if (song == null) {
                 playerEmpty();
@@ -90,5 +102,13 @@ public class PlayerController implements Initializable {
         });
 
         player.currentTimeProperty().addListener((obs, o, n) -> updateControls(player.getCurrentSong()));
+        playerEmpty();
+
+        // Control bindings
+        timeSlider.valueChangingProperty().addListener((obs, old, isChanging) -> {
+            if (!isChanging) {
+                player.seek(Duration.millis(timeSlider.getValue()));
+            }
+        });
     }
 }
