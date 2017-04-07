@@ -21,17 +21,17 @@
       </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="title" layoutX="14.0" layoutY="14.0" text="Signed, Sealed, Delivered (I'm Yours)" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+            <Label fx:id="title" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="artist" layoutX="8.0" layoutY="37.0" text="Stevie Wonder" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
+            <Label fx:id="artist" layoutX="8.0" layoutY="37.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Slider fx:id="timeSlider" layoutX="8.0" layoutY="91.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
+            <Slider fx:id="timeSlider" layoutX="8.0" layoutY="91.0" max="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
             <Label fx:id="comboTime" layoutX="8.0" layoutY="71.0" text="0:00 / 2:41" AnchorPane.leftAnchor="8.0" />
             <Label fx:id="negTime" layoutX="315.0" layoutY="71.0" text="-2:41" textAlignment="RIGHT" AnchorPane.rightAnchor="8.0" />
             <Separator layoutX="56.0" layoutY="62.0" prefWidth="200.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />

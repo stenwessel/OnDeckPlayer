@@ -1,5 +1,8 @@
 package io.github.stenwessel.ondeckplayer.player;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -10,7 +13,8 @@ import javafx.util.Duration;
  */
 public class Player {
 
-    private Song currentSong;
+    private ObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Duration> currentTimeProperty = new SimpleObjectProperty<>(Duration.UNKNOWN);
 
     /**
      * Loads a new song into the player. Also loads the song's MediaPlayer.
@@ -19,11 +23,12 @@ public class Player {
      *         The song to load.
      */
     public void load(Song song) {
-        if (currentSong != null) {
-            currentSong.dispose();
+        if (getCurrentSong() != null) {
+            getCurrentSong().dispose();
         }
-        currentSong = song;
-        currentSong.load();
+        song.load();
+        currentSongProperty.set(song);
+        currentTimeProperty.bind(song.getMediaPlayer().currentTimeProperty());
     }
 
     /**
@@ -43,8 +48,8 @@ public class Player {
      * @see MediaPlayer#play()
      */
     public void play() {
-        if (currentSong != null) {
-            currentSong.getMediaPlayer().play();
+        if (getCurrentSong() != null) {
+            getCurrentSong().getMediaPlayer().play();
         }
     }
 
@@ -54,8 +59,8 @@ public class Player {
      * @see MediaPlayer#pause()
      */
     public void pause() {
-        if (currentSong != null) {
-            currentSong.getMediaPlayer().pause();
+        if (getCurrentSong() != null) {
+            getCurrentSong().getMediaPlayer().pause();
         }
     }
 
@@ -65,8 +70,8 @@ public class Player {
      * @see MediaPlayer#stop()
      */
     public void stop() {
-        if (currentSong != null) {
-            currentSong.getMediaPlayer().stop();
+        if (getCurrentSong() != null) {
+            getCurrentSong().getMediaPlayer().stop();
         }
     }
 
@@ -78,12 +83,20 @@ public class Player {
      * @see MediaPlayer#seek(Duration)
      */
     public void seek(Duration seekTime) {
-        if (currentSong != null) {
-            currentSong.getMediaPlayer().seek(seekTime);
+        if (getCurrentSong() != null) {
+            getCurrentSong().getMediaPlayer().seek(seekTime);
         }
     }
 
+    public ReadOnlyObjectProperty<Song> currentSongProperty() {
+        return currentSongProperty;
+    }
+
+    public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
+        return currentTimeProperty;
+    }
+
     public Song getCurrentSong() {
-        return currentSong;
+        return currentSongProperty.get();
     }
 }
