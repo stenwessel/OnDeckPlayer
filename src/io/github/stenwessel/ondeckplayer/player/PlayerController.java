@@ -32,16 +32,18 @@ public class PlayerController implements Initializable {
     @FXML public Label artist;
     @FXML public ImageView albumArt;
 
-    private Main main;
+    private final Player player;
 
     public PlayerController(Main main) {
-        this.main = main;
+        this.player = main.getPlayer();
     }
 
     public void onPlayAction(ActionEvent event) {
-        Song song = new Song("E:\\Baseball\\PAA\\Playlists\\Opening Day 2017\\Ed Sheeran - " +
-                                     "Castle On The Hill.mp3");
-        main.getPlayer().play(song);
+        if (player.getStatus() == Player.Status.PLAYING) {
+            player.pause();
+        } else {
+            player.play();
+        }
     }
 
     private void playerEmpty() {
@@ -68,7 +70,8 @@ public class PlayerController implements Initializable {
 
             // Get metadata
             ObservableMap<String, Object> metadata = mp.getMedia().getMetadata();
-            albumArt.setImage((Image)metadata.get("image"));
+            Image mImage = (Image)metadata.get("image");
+            albumArt.setImage(mImage != null ? mImage : EMPTY_IMAGE);
             String mTitle = (String)metadata.get("title");
             title.setText(mTitle != null ? mTitle : UNKNOWN);
             String mArtist = (String)metadata.get("artist");
@@ -90,8 +93,6 @@ public class PlayerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Player player = main.getPlayer();
-
         // Song and time listeners
         player.currentSongProperty().addListener((o, old, song) -> {
             if (song == null) {
@@ -110,5 +111,9 @@ public class PlayerController implements Initializable {
                 player.seek(Duration.millis(timeSlider.getValue()));
             }
         });
+
+        Song song = new Song("E:\\Baseball\\PAA\\Playlists\\Opening Day 2017\\Ed Sheeran - " +
+                                     "Castle On The Hill.mp3");
+        player.load(song);
     }
 }

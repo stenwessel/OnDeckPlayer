@@ -88,6 +88,25 @@ public class Player {
         }
     }
 
+    public Status getStatus() {
+        if (getCurrentSong() == null) {
+            return Status.EMPTY;
+        }
+
+        switch (getCurrentSong().getMediaPlayer().getStatus()) {
+            case PLAYING: return Status.PLAYING;
+            case PAUSED: return Status.PAUSED;
+            default: return Status.STOPPED;
+        }
+    }
+
+    public enum Status {
+        PLAYING,
+        PAUSED,
+        STOPPED,
+        EMPTY
+    }
+
     public ReadOnlyObjectProperty<Song> currentSongProperty() {
         return currentSongProperty;
     }
