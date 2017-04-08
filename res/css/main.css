@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('../font/fontawesome.ttf');
+}
+
+
+.icon-button {
+    -fx-font-family: 'FontAwesome';
+    -fx-text-alignment: center;
+}

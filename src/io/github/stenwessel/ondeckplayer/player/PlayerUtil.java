@@ -7,6 +7,10 @@ import javafx.util.Duration;
  */
 public class PlayerUtil {
 
+    private PlayerUtil() {
+
+    }
+
     public static String formatDuration(Duration duration) {
         boolean negated = false;
         if (duration.toMillis() < 0) {

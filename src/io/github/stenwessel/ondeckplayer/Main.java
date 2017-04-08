@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 public class Main extends Application {
 
     private final Player player = new Player();
@@ -18,8 +20,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        fxmlLoader.setControllerFactory((controllerClass) -> {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        loader.setResources(ResourceBundle.getBundle("font.fontawesome"));
+
+        loader.setControllerFactory((controllerClass) -> {
             if (controllerClass == PlayerController.class) {
                 return new PlayerController(this);
             }
@@ -31,9 +35,12 @@ public class Main extends Application {
             }
         });
 
-        Parent root = fxmlLoader.load();
+        Parent root = loader.load();
         primaryStage.setTitle("OnDeckPlayer");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("css/main.css");
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
