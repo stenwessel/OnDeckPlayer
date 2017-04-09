@@ -6,8 +6,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
@@ -43,10 +47,23 @@ public class Main extends Application {
         scene.getStylesheets().add("css/main.css");
 
         primaryStage.setScene(scene);
+        primaryStage.getIcons().addAll(getIcons());
         primaryStage.show();
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    private Collection<Image> getIcons() {
+        return new HashSet<Image>(){{
+            Collections.addAll(this,
+                    new Image("img/icon/icon16.png"),
+                    new Image("img/icon/icon32.png"),
+                    new Image("img/icon/icon48.png"),
+                    new Image("img/icon/icon128.png"),
+                    new Image("img/icon/icon256.png")
+            );
+        }};
     }
 }
