@@ -130,9 +130,5 @@ public class PlayerController implements Initializable {
         });
 
         volumeSlider.valueProperty().bindBidirectional(player.volumeProperty());
-
-        Song song = new Song("E:\\Baseball\\PAA\\Playlists\\Opening Day 2017\\Ed Sheeran - " +
-                                     "Castle On The Hill.mp3");
-        player.load(song);
     }
 }

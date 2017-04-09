@@ -29,7 +29,7 @@ public class Player {
      */
     public void load(Song song) {
         if (getCurrentSong() != null) {
-            volumeProperty.unbindBidirectional(song.getMediaPlayer().volumeProperty());
+            volumeProperty.unbindBidirectional(getCurrentSong().getMediaPlayer().volumeProperty());
             getCurrentSong().dispose();
         }
         song.load();

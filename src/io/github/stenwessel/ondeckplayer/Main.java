@@ -26,6 +26,8 @@ public class Main extends Application {
         loader.setControllerFactory((controllerClass) -> {
             if (controllerClass == PlayerController.class) {
                 return new PlayerController(this);
+            } else if (controllerClass == Controller.class) {
+                return new Controller(this);
             }
             try {
                 return controllerClass.newInstance();
