@@ -1,7 +1,9 @@
 package io.github.stenwessel.ondeckplayer.player;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -14,7 +16,10 @@ import javafx.util.Duration;
 public class Player {
 
     private ObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
+
+    // Delegated properties
     private ObjectProperty<Duration> currentTimeProperty = new SimpleObjectProperty<>(Duration.UNKNOWN);
+    private DoubleProperty volumeProperty = new SimpleDoubleProperty();
 
     /**
      * Loads a new song into the player. Also loads the song's MediaPlayer.
@@ -24,11 +29,13 @@ public class Player {
      */
     public void load(Song song) {
         if (getCurrentSong() != null) {
+            volumeProperty.unbindBidirectional(song.getMediaPlayer().volumeProperty());
             getCurrentSong().dispose();
         }
         song.load();
         currentSongProperty.set(song);
         currentTimeProperty.bind(song.getMediaPlayer().currentTimeProperty());
+        volumeProperty.bindBidirectional(song.getMediaPlayer().volumeProperty());
     }
 
     /**
@@ -113,6 +120,10 @@ public class Player {
 
     public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
         return currentTimeProperty;
+    }
+
+    public DoubleProperty volumeProperty() {
+        return volumeProperty;
     }
 
     public Song getCurrentSong() {

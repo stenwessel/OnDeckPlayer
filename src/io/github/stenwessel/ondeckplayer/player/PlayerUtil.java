@@ -21,7 +21,7 @@ public class PlayerUtil {
         return (negated ? "-" : "") + String.format(
                 "%d:%02d",
                 (long)duration.toMinutes(),
-                Math.round(duration.toSeconds() % 60)
+                (long)(duration.toSeconds() % 60)
         );
     }
 }

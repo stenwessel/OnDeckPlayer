@@ -33,15 +33,6 @@
             </Label>
             <Slider fx:id="timeSlider" layoutX="8.0" layoutY="91.0" max="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
             <Separator layoutX="56.0" layoutY="62.0" prefWidth="200.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
-            <Button fx:id="playButton" layoutX="10.0" layoutY="111.0" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="30.0" prefWidth="37.0" styleClass="icon-button" text="%fa.play" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0">
-               <font>
-                  <Font size="11.0" />
-               </font></Button>
-            <Button layoutX="54.0" layoutY="116.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="37.0" text="Stop" textAlignment="CENTER" textOverrun="CLIP">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Button>
             <HBox layoutX="8.0" layoutY="71.0" prefHeight="14.0" prefWidth="334.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
                <children>
                   <Label fx:id="currentTime" text="0:00" HBox.hgrow="NEVER" />
@@ -51,6 +42,14 @@
                   <Label fx:id="negativeTime" text="0:00" textAlignment="RIGHT" HBox.hgrow="NEVER" />
                </children>
             </HBox>
+            <ToolBar layoutX="14.0" layoutY="107.0" prefHeight="35.0" prefWidth="334.0" styleClass="plain" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
+              <items>
+                  <Button fx:id="playButton" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="35.0" prefWidth="35.0" style="-fx-font-size: 22px;" styleClass="icon-button" text="%fa.play" />
+                  <Button fx:id="stopButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-font-size: 15px;" styleClass="icon-button" text="%fa.stop" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Slider fx:id="volumeSlider" blockIncrement="0.125" majorTickUnit="0.5" max="1.0" prefHeight="24.0" prefWidth="100.0" showTickMarks="true" value="1.0" />
+              </items>
+            </ToolBar>
          </children>
       </AnchorPane>
    </children>

@@ -21,7 +21,12 @@ public class PlayerController implements Initializable {
     private static final String UNKNOWN = "Unknown";
     private static final Image EMPTY_IMAGE = new Image("/img/vinylbaseball.png");
 
+    private final Player player;
+    private ResourceBundle bundle;
+
     @FXML public Button playButton;
+    @FXML public Button stopButton;
+    @FXML public Slider volumeSlider;
 
     @FXML public Slider timeSlider;
     @FXML public Label currentTime;
@@ -32,8 +37,6 @@ public class PlayerController implements Initializable {
     @FXML public Label artist;
     @FXML public ImageView albumArt;
 
-    private final Player player;
-
     public PlayerController(Main main) {
         this.player = main.getPlayer();
     }
@@ -41,8 +44,10 @@ public class PlayerController implements Initializable {
     public void onPlayAction(ActionEvent event) {
         if (player.getStatus() == Player.Status.PLAYING) {
             player.pause();
+            playButton.setText(bundle.getString("fa.play"));
         } else {
             player.play();
+            playButton.setText(bundle.getString("fa.pause"));
         }
     }
 
@@ -50,6 +55,11 @@ public class PlayerController implements Initializable {
         // Reset slider
         timeSlider.setMin(0);
         timeSlider.setMax(0);
+
+        // Disable controls
+        timeSlider.setDisable(true);
+        playButton.setDisable(true);
+        stopButton.setDisable(true);
 
         // Reset song metadata
         albumArt.setImage(EMPTY_IMAGE);
@@ -68,6 +78,11 @@ public class PlayerController implements Initializable {
             // Set song duration
             totalDuration.setText(PlayerUtil.formatDuration(mp.getStopTime()));
 
+            // Enable controls
+            timeSlider.setDisable(false);
+            playButton.setDisable(false);
+            stopButton.setDisable(false);
+
             // Get metadata
             ObservableMap<String, Object> metadata = mp.getMedia().getMetadata();
             Image mImage = (Image)metadata.get("image");
@@ -85,7 +100,7 @@ public class PlayerController implements Initializable {
         // Current time
         Duration duration = mp.getCurrentTime();
         if (!timeSlider.isValueChanging()) {
-            timeSlider.adjustValue(duration.toMillis());
+            timeSlider.setValue(duration.toMillis());
         }
         currentTime.setText(PlayerUtil.formatDuration(duration));
         negativeTime.setText(PlayerUtil.formatDuration(mp.getStopTime().subtract(duration).negate()));
@@ -93,6 +108,8 @@ public class PlayerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        bundle = resources;
+
         // Song and time listeners
         player.currentSongProperty().addListener((o, old, song) -> {
             if (song == null) {
@@ -106,11 +123,13 @@ public class PlayerController implements Initializable {
         playerEmpty();
 
         // Control bindings
-        timeSlider.valueChangingProperty().addListener((obs, old, isChanging) -> {
+        timeSlider.valueChangingProperty().addListener((obs, wasChanging, isChanging) -> {
             if (!isChanging) {
                 player.seek(Duration.millis(timeSlider.getValue()));
             }
         });
+
+        volumeSlider.valueProperty().bindBidirectional(player.volumeProperty());
 
         Song song = new Song("E:\\Baseball\\PAA\\Playlists\\Opening Day 2017\\Ed Sheeran - " +
                                      "Castle On The Hill.mp3");
