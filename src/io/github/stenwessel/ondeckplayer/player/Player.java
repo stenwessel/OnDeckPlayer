@@ -16,10 +16,11 @@ import javafx.util.Duration;
 public class Player {
 
     private ObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<Status> statusProperty = new SimpleObjectProperty<>(Status.EMPTY);
 
     // Delegated properties
     private ObjectProperty<Duration> currentTimeProperty = new SimpleObjectProperty<>(Duration.UNKNOWN);
-    private DoubleProperty volumeProperty = new SimpleDoubleProperty();
+    private DoubleProperty volumeProperty = new SimpleDoubleProperty(1);
 
     /**
      * Loads a new song into the player. Also loads the song's MediaPlayer.
@@ -29,13 +30,13 @@ public class Player {
      */
     public void load(Song song) {
         if (getCurrentSong() != null) {
-            volumeProperty.unbindBidirectional(getCurrentSong().getMediaPlayer().volumeProperty());
+            getCurrentSong().getMediaPlayer().volumeProperty().unbindBidirectional(volumeProperty);
             getCurrentSong().dispose();
         }
         song.load();
         currentSongProperty.set(song);
         currentTimeProperty.bind(song.getMediaPlayer().currentTimeProperty());
-        volumeProperty.bindBidirectional(song.getMediaPlayer().volumeProperty());
+        song.getMediaPlayer().volumeProperty().bindBidirectional(volumeProperty);
     }
 
     /**
@@ -57,6 +58,7 @@ public class Player {
     public void play() {
         if (getCurrentSong() != null) {
             getCurrentSong().getMediaPlayer().play();
+            statusProperty.set(Status.PLAYING);
         }
     }
 
@@ -68,6 +70,7 @@ public class Player {
     public void pause() {
         if (getCurrentSong() != null) {
             getCurrentSong().getMediaPlayer().pause();
+            statusProperty.set(Status.PAUSED);
         }
     }
 
@@ -79,6 +82,7 @@ public class Player {
     public void stop() {
         if (getCurrentSong() != null) {
             getCurrentSong().getMediaPlayer().stop();
+            statusProperty.set(Status.STOPPED);
         }
     }
 
@@ -95,18 +99,6 @@ public class Player {
         }
     }
 
-    public Status getStatus() {
-        if (getCurrentSong() == null) {
-            return Status.EMPTY;
-        }
-
-        switch (getCurrentSong().getMediaPlayer().getStatus()) {
-            case PLAYING: return Status.PLAYING;
-            case PAUSED: return Status.PAUSED;
-            default: return Status.STOPPED;
-        }
-    }
-
     public enum Status {
         PLAYING,
         PAUSED,
@@ -120,6 +112,14 @@ public class Player {
 
     public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
         return currentTimeProperty;
+    }
+
+    public ReadOnlyObjectProperty<Status> statusProperty() {
+        return statusProperty;
+    }
+
+    public Status getStatus() {
+        return statusProperty.get();
     }
 
     public DoubleProperty volumeProperty() {

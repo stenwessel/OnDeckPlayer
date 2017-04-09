@@ -44,10 +44,8 @@ public class PlayerController implements Initializable {
     public void onPlayAction(ActionEvent event) {
         if (player.getStatus() == Player.Status.PLAYING) {
             player.pause();
-            playButton.setText(bundle.getString("fa.play"));
         } else {
             player.play();
-            playButton.setText(bundle.getString("fa.pause"));
         }
     }
 
@@ -103,7 +101,7 @@ public class PlayerController implements Initializable {
             timeSlider.setValue(duration.toMillis());
         }
         currentTime.setText(PlayerUtil.formatDuration(duration));
-        negativeTime.setText(PlayerUtil.formatDuration(mp.getStopTime().subtract(duration).negate()));
+        negativeTime.setText(PlayerUtil.formatDuration(duration.subtract(mp.getStopTime())));
     }
 
     @Override
@@ -130,5 +128,22 @@ public class PlayerController implements Initializable {
         });
 
         volumeSlider.valueProperty().bindBidirectional(player.volumeProperty());
+
+        player.statusProperty().addListener((obs, oldStatus, newStatus) -> {
+            switch (newStatus) {
+                case EMPTY:
+                    playerEmpty();
+                    break;
+                case PAUSED:
+                    playButton.setText(bundle.getString("fa.play"));
+                    break;
+                case PLAYING:
+                    playButton.setText(bundle.getString("fa.pause"));
+                    break;
+                case STOPPED:
+                    playButton.setText(bundle.getString("fa.play"));
+                    break;
+            }
+        });
     }
 }

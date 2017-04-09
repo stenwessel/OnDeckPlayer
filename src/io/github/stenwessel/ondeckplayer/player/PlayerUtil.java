@@ -18,10 +18,19 @@ public class PlayerUtil {
             duration = duration.negate();
         }
 
+        double dRemSeconds = duration.toSeconds() % 60;
+        long remSeconds;
+        if (negated) {
+            remSeconds = (long)Math.ceil(dRemSeconds);
+        } else {
+            remSeconds = (long)dRemSeconds;
+        }
+
+
         return (negated ? "-" : "") + String.format(
                 "%d:%02d",
                 (long)duration.toMinutes(),
-                (long)(duration.toSeconds() % 60)
+                remSeconds
         );
     }
 }
