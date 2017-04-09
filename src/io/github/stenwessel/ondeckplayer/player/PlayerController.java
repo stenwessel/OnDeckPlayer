@@ -24,18 +24,18 @@ public class PlayerController implements Initializable {
     private final Player player;
     private ResourceBundle bundle;
 
-    @FXML public Button playButton;
-    @FXML public Button stopButton;
-    @FXML public Slider volumeSlider;
+    @FXML private Button playButton;
+    @FXML private Button stopButton;
+    @FXML private Slider volumeSlider;
 
-    @FXML public Slider timeSlider;
-    @FXML public Label currentTime;
-    @FXML public Label negativeTime;
-    @FXML public Label totalDuration;
+    @FXML private Slider timeSlider;
+    @FXML private Label currentTime;
+    @FXML private Label negativeTime;
+    @FXML private Label totalDuration;
 
-    @FXML public Label title;
-    @FXML public Label artist;
-    @FXML public ImageView albumArt;
+    @FXML private Label title;
+    @FXML private Label artist;
+    @FXML private ImageView albumArt;
 
     public PlayerController(Main main) {
         this.player = main.getPlayer();
